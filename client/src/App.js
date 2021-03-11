@@ -1,10 +1,25 @@
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Container } from "semantic-ui-react";
+
+import "semantic-ui-css/semantic.min.css";
+import "./App.css";
+
+import MenuBar from "./components/MenuBar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="App">
-     <h1>Hello world</h1>
-    </div>
+    <Router>
+      <Container>
+        <MenuBar />
+        <Router exact path="/" component={Home} />
+        <Router exact path="/login" component={Login} />
+        <Router exact path="/resgister" component={Register} />
+      </Container>
+    </Router>
   );
 }
 
