@@ -28,14 +28,14 @@ function Register() {
   };
 
   return (
-    <div className='form-container'>
-      <Form onSubmit={onSubmit} noValidate>
+    <div className="form-container">
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
         <h1>Register</h1>
         <Form.Input
           label="Username"
           palceholder="Username..."
           name="username"
-          type='text'
+          type="text"
           value={values.username}
           onChange={onChange}
         />
@@ -43,7 +43,7 @@ function Register() {
           label="Email"
           palceholder="Email..."
           name="email"
-          type='email'
+          type="email"
           value={values.email}
           onChange={onChange}
         />
@@ -51,7 +51,7 @@ function Register() {
           label="Password"
           palceholder="Password..."
           name="password"
-          type='password'
+          type="password"
           value={values.password}
           onChange={onChange}
         />
@@ -59,7 +59,7 @@ function Register() {
           label="Confirm Password"
           palceholder="Confirm Password..."
           name="confirmPassword"
-          type='password'
+          type="password"
           value={values.confirmPassword}
           onChange={onChange}
         />
