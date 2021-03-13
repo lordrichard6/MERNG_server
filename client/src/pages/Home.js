@@ -3,10 +3,12 @@ import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Grid } from "semantic-ui-react";
 
+import PostCard from "../components/PostCard";
+
 function Home() {
   const {
     loading,
-    data: { getPosts: post },
+    data: { getPosts: posts },
   } = useQuery(FETCH_POSTS_QUERY);
 
   return (
@@ -20,7 +22,7 @@ function Home() {
         ) : (
           posts &&
           posts.map((post) => (
-            <Grid.Column key={post.id}>
+            <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
               <PostCard post={post} />
             </Grid.Column>
           ))
