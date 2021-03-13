@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button } from "semantic-ui-react";
+import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 function Register() {
@@ -14,14 +15,27 @@ function Register() {
     setvalues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const [addUser, { loading }] = useMutation(REGISTER_USER, {
+    update(proxy, result) {
+      console.log(result);
+    },
+    variables: values,
+  });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addUser();
+  };
+
   return (
-    <div>
+    <div className='form-container'>
       <Form onSubmit={onSubmit} noValidate>
         <h1>Register</h1>
         <Form.Input
           label="Username"
           palceholder="Username..."
           name="username"
+          type='text'
           value={values.username}
           onChange={onChange}
         />
@@ -29,6 +43,7 @@ function Register() {
           label="Email"
           palceholder="Email..."
           name="email"
+          type='email'
           value={values.email}
           onChange={onChange}
         />
@@ -36,6 +51,7 @@ function Register() {
           label="Password"
           palceholder="Password..."
           name="password"
+          type='password'
           value={values.password}
           onChange={onChange}
         />
@@ -43,6 +59,7 @@ function Register() {
           label="Confirm Password"
           palceholder="Confirm Password..."
           name="confirmPassword"
+          type='password'
           value={values.confirmPassword}
           onChange={onChange}
         />
@@ -54,6 +71,28 @@ function Register() {
   );
 }
 
-
+const REGISTER_USER = gql`
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        username: $username
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      id
+      email
+      username
+      createdAt
+      token
+    }
+  }
+`;
 
 export default Register;
