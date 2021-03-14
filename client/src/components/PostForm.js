@@ -6,7 +6,9 @@ import { useMutation } from "@apollo/react-hooks";
 import { useForm } from "../util/hooks";
 
 function PostForm() {
-  const { values, onChange, onSubmit } = useForm(createPostCallback);
+  const { values, onChange, onSubmit } = useForm(createPostCallback, {
+    body: "",
+  });
 
   const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
     variables: values,
@@ -39,7 +41,7 @@ function PostForm() {
 }
 
 const CREATE_POST_MUTATION = gql`
-  mutation createPost($body: Strung!) {
+  mutation createPost($body: String!) {
     createPost(body: $body) {
       id
       body
