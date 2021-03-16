@@ -6,6 +6,7 @@ const checkAuth = require("../../util/check-auth");
 module.exports = {
   Query: {
     async getPosts() {
+      console.log('getPosts')
       try {
         const posts = await Post.find().sort({ createdAt: -1 });
         return posts;
@@ -14,6 +15,7 @@ module.exports = {
       }
     },
     async getPost(_, { postId }) {
+      console.log('getPost')
       try {
         const post = await Post.findById(postId);
         if (post) {
@@ -28,6 +30,7 @@ module.exports = {
   },
   Mutation: {
     async createPost(_, { body }, context) {
+      console.log('createPost')
       const user = checkAuth(context);
 
 
@@ -39,13 +42,13 @@ module.exports = {
         body,
         user: user.id,
         username: user.username,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date().toISOString()
       });
 
       const post = await newPost.save();
 
       context.pubsub.publish("NEW_POST", {
-        newPost: post,
+        newPost: post
       });
 
       return post;
