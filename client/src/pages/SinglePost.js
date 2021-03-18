@@ -6,14 +6,13 @@ import moment from "moment";
 
 import { AuthContext } from "../context/auth";
 import LikeButton from "../components/LikeButton";
+import DeleteButton from "../components/DeleteButton";
 
 function SinglePost(props) {
   const postId = props.match.params.postId;
   const { user } = useContext(AuthContext);
 
-  const {
-    data: { getPost },
-  } = useQuery(FETCH_POST_QUERY, {
+  const { data: { getPost } = {} } = useQuery(FETCH_POST_QUERY, {
     variables: {
       postId,
     },
@@ -40,33 +39,38 @@ function SinglePost(props) {
           <Grid.Column width={2}>
             <Image
               src="https://i.pinimg.com/originals/17/2e/05/172e05d2a862ff36a5d17d3ed7c978d2.png"
-              size="small"
+              size="medium"
               float="right"
             />
           </Grid.Column>
-          <Card fluid>
-            <Card.Content>
-              <Card.Header>{username}</Card.Header>
-              <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-              <Card.Description>{body}</Card.Description>
-            </Card.Content>
-            <hr />
-            <Card.Content extra>
-              <LikeButton user={user} post={{ id, likeCount, likes }} />
-              <Button
-                as="div"
-                labelPosition="right"
-                onClick={() => console.log("Comment on post")}
-              >
-                <Button basic color="blue">
-                  <Icon name="comments" />
+          <Grid.Column width={10}>
+            <Card fluid>
+              <Card.Content>
+                <Card.Header>{username}</Card.Header>
+                <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
+                <Card.Description>{body}</Card.Description>
+              </Card.Content>
+              <hr />
+              <Card.Content extra>
+                <LikeButton user={user} post={{ id, likeCount, likes }} />
+                <Button
+                  as="div"
+                  labelPosition="right"
+                  onClick={() => console.log("Comment on post")}
+                >
+                  <Button basic color="blue">
+                    <Icon name="comments" />
+                  </Button>
+                  <Label basic color="blue" pointing="left">
+                    {commentCount}
+                  </Label>
                 </Button>
-                <Label basic color="blue" pointing="left">
-                  {commentCount}
-                </Label>
-              </Button>
-            </Card.Content>
-          </Card>
+                {user && user.username === username && (
+                  <DeleteButton postId={id} />
+                )}
+              </Card.Content>
+            </Card>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     );
